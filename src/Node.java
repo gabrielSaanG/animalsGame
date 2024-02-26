@@ -1,4 +1,3 @@
-import javax.swing.JOptionPane;
 public class Node<Type> {
     private Type value;
     private Node<Type> left;
@@ -10,6 +9,7 @@ public class Node<Type> {
         this.left = null;
         this.right = null;
     }
+
 
     public Type getValue() {
         return value;
