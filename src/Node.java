@@ -1,3 +1,4 @@
+import javax.swing.JOptionPane;
 public class Node<Type> {
     private Type value;
     private Node<Type> left;
