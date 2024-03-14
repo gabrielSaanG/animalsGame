@@ -2,34 +2,63 @@ import javax.swing.JOptionPane;
 
 public class animalGame {
 
-    public static void system() {
-
-        Tree<String> tree = new Tree<String>();
-        tree.addNewElement(null, 2);
-        tree.addNewElement("um tubarão", JOptionPane.YES_OPTION);
+    public static Object system(Tree<String> tree, Node<String> rootNode) {
         do {
             JOptionPane.showConfirmDialog(null, "Pense em um animal", "Jogo dos Animais", JOptionPane.OK_OPTION);
             int livesInWater = JOptionPane.showConfirmDialog(null, "O animal que você pensou vive na água?", "Jogo do Animais", JOptionPane.YES_NO_OPTION);
             tree.setLivesInWater(livesInWater);
-            guessSelectionFrame(tree);
+            switch (livesInWater){
+                case JOptionPane.YES_OPTION:
+                    question(rootNode.getLeft());
+                    break;
+                case JOptionPane.NO_OPTION:
+                    question(rootNode.getRight());
+                    break;
+            }
         } while (true);
     }
 
-    public static void guessSelectionFrame(Tree<String> tree) {
-            int ret = JOptionPane.showConfirmDialog(null, "O animal que você pensou é " + tree.searchElement(tree.getRoot()).getValue() + " ?", "Jogo dos Animais", JOptionPane.YES_NO_OPTION);
-            Node<String> nodeWithNoChilds = tree.searchElement(tree.getRoot());
-            if (ret == JOptionPane.NO_OPTION) {
-                ret = JOptionPane.showConfirmDialog(null, "O animal que você pensou é " + tree.searchElementWithOneChild(nodeWithNoChilds, tree.getRoot()).getValue() + " ?", "Jogo dos Animais", JOptionPane.YES_NO_OPTION);
-//                String animalName = JOptionPane.showInputDialog("Qual animal você pensou?");
-//                String animalChar = JOptionPane.showInputDialog(animalName + " ____, mas um tubarão não");
-//                tree.addNewElement(animalName, JOptionPane.NO_OPTION);
-//                tree.addNewElement(animalChar, JOptionPane.YES_OPTION);
-            } else {
-                JOptionPane.showMessageDialog(null, "Acertei denovo! ");
-                animalGame.system();
+    public static void question(Node<String> node) {
+        int resp;
+        do {
+            resp = JOptionPane.showConfirmDialog(null, "O animal que você pensou" + node.getValue() + " ?", "Jogo dos animais", JOptionPane.YES_NO_OPTION);
+
+            switch (resp) {
+                case JOptionPane.YES_OPTION:
+                    if (node.getLeft() != null) {
+                        node = node.getLeft();
+                        break;
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Acertei denovo!");
+                        break;
+                    }
+                case JOptionPane.NO_OPTION:
+                    if (node.getRight() != null) {
+                        System.out.println(node.getRight().getValue());
+                        node = node.getRight();
+                        break;
+                    } else {
+                        node = creation(node);
+                        System.out.println("pós criacao: " + node.getValue());
+                        resp = 2;
+                        break;
+                    }
             }
-
-        }
-
-
+        } while (resp != 2);
     }
+
+    public static Node<String> creation(Node<String> node){
+      String animalName = JOptionPane.showInputDialog("Qual animal você pensou? ");
+      String animalChar = JOptionPane.showInputDialog("O que o diferencia? ");
+
+      Node <String> newAnimalCharNode = new Node<String>(animalChar);
+
+      Node<String> newAnimalNameNode = new Node<String>(animalName);
+
+      node.setRight(newAnimalCharNode);
+      newAnimalCharNode.setLeft(newAnimalNameNode);
+        System.out.println("creation: " + node.getRight().getValue());
+      return node.getRight();
+    }
+
+}
