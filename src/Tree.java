@@ -7,80 +7,37 @@ public class Tree<String> {
     public Tree(){
         this.root = null;
     }
-
+    private Node<String> lastSeenNode;
 
 
     public void addNewElement(String value, int selectedAnswer){
         Node<String> newNode = new Node<String>(value);
-        if (root == null){
-            this.root = newNode;
-        } else {
-            Node<String> currentValue = this.root;
-            while (true) {
+        Node<String> currentValue = this.root;
 
+        if (currentValue == null){
+            setRoot(newNode);
+            currentValue = this.root;
+        }
+            while (true) {
                 if (newNode.getValue() != null && selectedAnswer == JOptionPane.YES_OPTION) {
                     if (currentValue.getLeft() != null) {
                         currentValue = currentValue.getLeft();
-
                     } else {
                         currentValue.setLeft(newNode);
-                        System.out.println(currentValue.getValue());
+                        System.out.println("left "+ currentValue.getLeft().getValue());
                         return;
                     }
                 } else if (newNode.getValue() != null && selectedAnswer == JOptionPane.NO_OPTION) {
                     if (currentValue.getRight() != null) {
                         currentValue = currentValue.getRight();
-
                     } else {
-                        currentValue.setRight((newNode));
+                        currentValue.setRight(newNode);
+                        System.out.println("right" + currentValue.getRight().getValue());
                         return;
                     }
                 }
             }
         }
-    }
-
-    public Node<String> searchElement(Node<String> position) {
-        Node<String> treePosition = position;
-        switch (livesInWater) {
-            case 0:
-                if (treePosition.getLeft() != null) {
-                    position = treePosition.getLeft();
-                    return searchElement(position);
-                } else if (treePosition.getRight() != null){
-                    position = treePosition.getRight();
-                    return searchElement(position);
-                } else{
-                    return (treePosition);
-                }
-        }
-        return treePosition;
-    }
-
-    public Node<String> searchElementWithOneChild(Node<String> nodeWithNoChilds, Node<String> position) {
-        Node<String> treePosition = position;
-        switch (livesInWater) {
-            case 0:
-                if (treePosition.getLeft() != null) {
-                    if (treePosition.getLeft().getValue() == nodeWithNoChilds.getValue()) {
-                        return position;
-                    } else {
-                        position = treePosition.getLeft();
-                        return (searchElementWithOneChild(nodeWithNoChilds, position));
-                    }
-                } else if (treePosition.getRight() != null) {
-                    if (treePosition.getRight().getValue() == nodeWithNoChilds.getValue()){
-                        return position;
-                    }
-                    position = treePosition.getRight();
-                    return (searchElementWithOneChild(nodeWithNoChilds, position));
-                } else{
-                    return position;
-                }
-
-        }
-        return position;
-    }
 
 
     public Node<String> getRoot() {
@@ -91,19 +48,6 @@ public class Tree<String> {
         this.root = root;
     }
 
-    public boolean checkTree(Node<String> currentValue){
-        if (currentValue != null){
-            if (currentValue.getLeft() == null && currentValue.getRight() == null){
-                return true;
-            }
-            checkTree(currentValue.getLeft());
-
-        } else {
-            checkTree(currentValue.getRight());
-        }
-        return false;
-    }
-
     public int getLivesInWater() {
         return livesInWater;
     }
@@ -111,4 +55,14 @@ public class Tree<String> {
     public void setLivesInWater(int livesInWater) {
         this.livesInWater = livesInWater;
     }
+
+    @Override
+    public java.lang.String toString() {
+        return "Tree{" +
+                "root=" + root +
+                ", livesInWater=" + livesInWater +
+                ", lastSeenNode=" + lastSeenNode +
+                '}';
+    }
 }
+
