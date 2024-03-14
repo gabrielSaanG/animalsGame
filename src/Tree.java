@@ -40,17 +40,17 @@ public class Tree<String> {
         }
 
 
-    public Node<String> getRoot() {
-        return root;
+    public void searchForLastNode(Node<String> node){
+        if (node.getRight() != null){
+            node = node.getRight();
+            searchForLastNode(node);
+        }
     }
 
     public void setRoot(Node<String> root) {
         this.root = root;
     }
 
-    public int getLivesInWater() {
-        return livesInWater;
-    }
 
     public void setLivesInWater(int livesInWater) {
         this.livesInWater = livesInWater;
